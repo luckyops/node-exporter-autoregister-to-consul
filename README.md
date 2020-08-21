@@ -24,6 +24,10 @@ kubectl delete deployments.apps curl -n=consul
 ```bash
 consul services deregister -id=node_exporter
 ```
+# 暂用方案
+```bash
+docker build . -t quay.io/prometheus/node-exporter:latest
+```
 # 安装node-exporter
 ```bash
 helm install node-exporter -f ./prometheus-node-exporter/values.yaml ./prometheus-node-exporter -n=consul
