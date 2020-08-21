@@ -2,11 +2,13 @@
 
 
 # 安装consul
+```bash
 helm install consul stable/consul -n=consul
-
+```
 # 转发端口进行访问测试
+```bash
 kubectl port-forward consul-0 8500:8500 -n=consul
-
+```
 
 # 查看集群内的dns是怎么搞的
 ```bash
@@ -27,9 +29,9 @@ consul services deregister -id=node_exporter
 helm install node-exporter -f ./prometheus-node-exporter/values.yaml ./prometheus-node-exporter -n=consul
 ```
 
-# consul有关于服务失效后自动清理的讨论
+#### consul有关于服务失效后自动清理的讨论
 https://github.com/hashicorp/consul/issues/1188
-#A simple service clean tool for Consul.
+#### A simple service clean tool for Consul.
 https://github.com/Gozap/cclean
 
 # 为了解决exporter自动注册问题，我修改了Dockerfile，添加了curl，修改了启动方式，增加了一个自动注册脚本
