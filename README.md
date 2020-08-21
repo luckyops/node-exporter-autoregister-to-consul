@@ -14,27 +14,27 @@ kubectl run curl --image=radial/busyboxplus:curl -n=consul -i --tty
 kubectl run dig  --image=tutum/dnsutils:latest -n=consul -i --tty
 dig consul.consul.svc.cluster.local
 ```
-#删除curl测试pods,deployments
+# 删除curl测试pods,deployments
 ```bash
 kubectl delete deployments.apps curl -n=consul
 ```
-#consul删除service
+# consul删除service
 ```bash
 consul services deregister -id=node_exporter
 ```
-#安装node-exporter
+# 安装node-exporter
 ```bash
 helm install node-exporter -f ./prometheus-node-exporter/values.yaml ./prometheus-node-exporter -n=consul
 ```
 
-#consul有关于服务失效后自动清理的讨论
+# consul有关于服务失效后自动清理的讨论
 https://github.com/hashicorp/consul/issues/1188
 #A simple service clean tool for Consul.
 https://github.com/Gozap/cclean
 
-#为了解决exporter自动注册问题，我修改了Dockerfile，添加了curl，修改了启动方式，增加了一个自动注册脚本
+# 为了解决exporter自动注册问题，我修改了Dockerfile，添加了curl，修改了启动方式，增加了一个自动注册脚本
 
-#我写了一个register.sh,用来解决consul自动注册的问题
+# 我写了一个register.sh,用来解决consul自动注册的问题
 ```bash
 /bin/curl -X PUT -d '{"id": "'$MY_POD_NAME'","name": "node-exporter","address": "'$MY_POD_IP'","port": 9100,"meta":{"exporter":"node"},"tags": ["node-exporter"],"checks": [{"http": "http://'$MY_POD_IP':9100/metrics", "interval": "5s"}]}'  http://consul:8500/v1/agent/service/register
 /bin/node_exporter
