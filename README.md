@@ -37,11 +37,7 @@ https://github.com/hashicorp/consul/issues/1188
 #### A simple service clean tool for Consul.
 https://github.com/Gozap/cclean
 
-### 为了解决exporter自动注册问题，我修改了Dockerfile，添加了curl，修改了启动方式，增加了一个自动注册脚本
-```bash
-/bin/curl -X PUT -d '{"id": "'$MY_POD_NAME'","name": "node-exporter","address": "'$MY_POD_IP'","port": 9100,"meta":{"exporter":"node"},"tags": ["node-exporter"],"checks": [{"http": "http://'$MY_POD_IP':9100/metrics", "interval": "5s"}]}'  http://consul:8500/v1/agent/service/register
-/bin/node_exporter
-```
+
 #### exporter的yaml新增了几个env
 ```bash
           - name: MY_POD_NAME
