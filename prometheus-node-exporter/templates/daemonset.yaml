@@ -38,12 +38,12 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: {{ .Values.PreStart }}
+                command: [{{ .Values.PreStart }}]
           args:
             - --path.procfs=/host/proc
             - --path.sysfs=/host/sys
             - --web.listen-address=$(HOST_IP):{{ .Values.service.port }}
-          command: {{ .Values.CMD }}
+          command: [{{ .Values.CMD }}]
 {{- if .Values.extraArgs }}
 {{ toYaml .Values.extraArgs | indent 12 }}
 {{- end }}
@@ -57,10 +57,10 @@ spec:
                 apiVersion: v1
                 fieldPath: status.hostIP
             {{- end }}
-          - name: NAME
+          - name: MY_POD_NAME
             valueFrom:
               fieldRef:
-                fieldPath: {{ template "prometheus-node-exporter.name" . }}
+                fieldPath: metadata.name
           - name: MY_POD_NAMESPACE
             valueFrom:
               fieldRef:
