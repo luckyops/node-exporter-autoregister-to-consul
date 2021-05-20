@@ -30,7 +30,7 @@ updateStrategy:
   rollingUpdate:
     maxUnavailable: 1
 CMD: "/bin/node_exporter"
-PreStart: "/bin/sh,/tmp/register.sh"
+postStart: "/bin/sh,/tmp/register.sh"
 preStop: "/bin/sh,/tmp/deregister.sh"
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

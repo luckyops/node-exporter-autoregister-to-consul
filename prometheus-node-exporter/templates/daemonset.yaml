@@ -38,10 +38,10 @@ spec:
           lifecycle:
             postStart:
               exec:
-                command: [{{ .Values.PreStart }}]
-            postStop:
+                command: [{{ .Values.postStart }}]
+            preStop:
               exec:
-                command: [{{ .Values.PreStop }}]
+                command: [{{ .Values.preStop }}]
           args:
             - --path.procfs=/host/proc
             - --path.sysfs=/host/sys
