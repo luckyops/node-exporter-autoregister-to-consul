@@ -12,4 +12,4 @@ COPY --from=builder /bin/curl /bin/curl
 ADD ./register.sh /tmp/.
 EXPOSE      9100
 USER        nobody
-ENTRYPOINT  [ "/bin/sh /tmp/register.sh" ]
+ENTRYPOINT  [ "/bin/node_exporter" ]

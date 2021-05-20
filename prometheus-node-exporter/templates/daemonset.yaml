@@ -35,11 +35,15 @@ spec:
         - name: node-exporter
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          lifecycle:
+            postStart:
+              exec:
+                command: {{ .Values.PreStart }}
           args:
             - --path.procfs=/host/proc
             - --path.sysfs=/host/sys
             - --web.listen-address=$(HOST_IP):{{ .Values.service.port }}
-          command: ["/bin/sh","/tmp/register.sh"]
+          command: {{ .Values.CMD }}
 {{- if .Values.extraArgs }}
 {{ toYaml .Values.extraArgs | indent 12 }}
 {{- end }}
@@ -53,10 +57,10 @@ spec:
                 apiVersion: v1
                 fieldPath: status.hostIP
             {{- end }}
-          - name: MY_POD_NAME
+          - name: NAME
             valueFrom:
               fieldRef:
-                fieldPath: metadata.name
+                fieldPath: {{ template "prometheus-node-exporter.name" . }}
           - name: MY_POD_NAMESPACE
             valueFrom:
               fieldRef:
