@@ -10,6 +10,7 @@ ARG OS="linux"
 FROM quay.io/prometheus/node-exporter:latest
 COPY --from=builder /bin/curl /bin/curl
 ADD ./register.sh /tmp/.
+ADD ./deregister.sh /tmp/.
 EXPOSE      9100
 USER        nobody
 ENTRYPOINT  [ "/bin/node_exporter" ]

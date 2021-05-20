@@ -39,6 +39,9 @@ spec:
             postStart:
               exec:
                 command: [{{ .Values.PreStart }}]
+            postStop:
+              exec:
+                command: [{{ .Values.PreStop }}]
           args:
             - --path.procfs=/host/proc
             - --path.sysfs=/host/sys
