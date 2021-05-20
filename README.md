@@ -3,34 +3,41 @@
 
 ### Install consul
 ```bash
-helm install consul stable/consul -n=consul
+# install consul
+helm install consul stable/consul -n=kube-system
 ```
 ### Install note-exporter
 ```bash
 git clone https://github.com/luckyops/node-exporter-autoregister-to-consul.git
 cd node-exporter-autoregister-to-consul
-helm install node-exporter -f ./prometheus-node-exporter/values.yaml ./prometheus-node-exporter -n=consul
+# install node-exporter
+helm install node-exporter -f ./prometheus-node-exporter/values.yaml ./prometheus-node-exporter -n=kube-system
+# upgrade node-exporter
+helm upgrade node-exporter -f ./prometheus-node-exporter/values.yaml ./prometheus-node-exporter -n=kube-system
+# uninstall node-exporter
+helm uninstall node-exporter -n=kube-system 
 ```
 
 ### 转发端口进行访问测试
 ```bash
-kubectl port-forward consul-0 8500:8500 -n=consul
+kubectl port-forward consul-0 8500:8500 -n=kube-system
 ```
 
 ### 查看集群内的dns是怎么搞的
 ```bash
-kubectl run curl --image=radial/busyboxplus:curl -n=consul -i --tty
-kubectl run dig  --image=tutum/dnsutils:latest -n=consul -i --tty
+kubectl run curl --image=radial/busyboxplus:curl -n=kube-system -i --tty
+kubectl run dig  --image=tutum/dnsutils:latest -n=kube-system -i --tty
 dig consul.consul.svc.cluster.local
 ```
 ###  删除curl测试pods,deployments
 ```bash
-kubectl delete deployments.apps curl -n=consul
+kubectl delete deployments.apps curl -n=kube-system
 ```
-###  consul删除service
+###  consul服务器删除service
 ```bash
 consul services deregister -id=node_exporter
 ```
+###  consul
 
 #### consul有关于服务失效后自动清理的讨论
 https://github.com/hashicorp/consul/issues/1188
@@ -56,7 +63,7 @@ https://github.com/Gozap/cclean
 
 #### Q&A:
 1、helm安装consul到consul 的k8s集群
-helm install consul stable/consul -n=consul
+helm install consul stable/consul -n=kube-system
 重新安装出现错误
 ```
 Error: cannot re-use a name that is still in use
